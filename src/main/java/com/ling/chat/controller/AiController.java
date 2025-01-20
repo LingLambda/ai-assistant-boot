@@ -1,5 +1,6 @@
 package com.ling.chat.controller;
 
+import com.ling.chat.entity.RedisChatMemory;
 import com.ling.common.util.Result;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
@@ -23,13 +24,15 @@ public class AiController {
 
   private final ChatClient chatClient;
   private final VectorStore vectorStore;
+  private final RedisChatMemory redisChatMemory;
   private InMemoryChatMemory inMemoryChatMemory;
 
   AiController(
       ChatClient chatClient,
-      VectorStore vectorStore) {
+      VectorStore vectorStore, RedisChatMemory redisChatMemory) {
     this.chatClient = chatClient;
     this.vectorStore = vectorStore;
+    this.redisChatMemory = redisChatMemory;
   }
 
   @GetMapping("weather")
@@ -100,6 +103,12 @@ public class AiController {
     inMemoryChatMemory.add("1", new UserMessage(message));
     System.out.println(inMemoryChatMemory);
     return inMemoryChatMemory.get("1",10);
+  }
+  @PostMapping("test4")
+  public List<Message> test4(@RequestBody String message){
+    redisChatMemory.add("1", new UserMessage(message));
+    System.out.println(redisChatMemory);
+    return redisChatMemory.get("1",10);
   }
 
   private ChatClient.ChatClientRequestSpec initContext(Message userMessage){

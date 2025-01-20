@@ -1,0 +1,11 @@
+{
+  "date": "2024-12-31",
+  "city": "Beijing",
+  "temperature": {
+    "min": -5.2,
+    "max": 15.6
+  },
+  "humidity": 60,
+  "wind_speed": 5.8,
+  "content": "unnySunnySunnySunnySunnySunny"
+}

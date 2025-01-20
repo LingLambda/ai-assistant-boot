@@ -1,0 +1,57 @@
+[
+  {
+    "date": "2024-12-31",
+    "city": "Beijing",
+    "temperature": {
+      "min": -5.2,
+      "max": 15.6
+    },
+    "humidity": 60,
+    "wind_speed": 5.8,
+    "content": "unnySunnySunnySunnySunnySunny"
+  },
+  {
+    "date": "2024-12-30",
+    "city": "Beijing",
+    "temperature": {
+      "min": -3.1,
+      "max": 18.2
+    },
+    "humidity": 40,
+    "wind_speed": 3.7,
+    "content": "Cloudy"
+  },
+  {
+    "date": "2024-12-29",
+    "city": "Beijing",
+    "temperature": {
+      "min": -2.4,
+      "max": 12.9
+    },
+    "humidity": 70,
+    "wind_speed": 4.3,
+    "condition": "Rainy"
+  },
+  {
+    "date": "2024-12-28",
+    "city": "Beijing",
+    "temperature": {
+      "min": -1.8,
+      "max": 14.3
+    },
+    "humidity": 85,
+    "wind_speed": 7.5,
+    "condition": "Snowy"
+  },
+  {
+    "date": "2024-12-27",
+    "city": "Beijing",
+    "temperature": {
+      "min": -4.6,
+      "max": 16.7
+    },
+    "humidity": 50,
+    "wind_speed": 6.2,
+    "condition": "Windy"
+  }
+]

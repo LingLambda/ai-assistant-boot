@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- 设置日志文件的输出目录 -->
+    <property name="LOG_HOME" value="./logs"/>
+
+    <!-- 控制根日志级别及输出位置 -->
+    <logger name="org.springframework" level="INFO"/>
+    <logger name="com.ling.server" level="DEBUG"/>
+
+    <!-- 控制日志输出到控制台 -->
+    <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 控制日志输出到文件 -->
+    <appender name="file" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_HOME}/web-server.log</file>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 将日志输出到控制台和文件 -->
+    <root level="INFO">
+        <appender-ref ref="console"/>
+        <appender-ref ref="file"/>
+    </root>
+
+</configuration>

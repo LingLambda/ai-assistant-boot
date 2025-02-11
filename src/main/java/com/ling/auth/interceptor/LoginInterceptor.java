@@ -28,10 +28,10 @@ public class LoginInterceptor implements HandlerInterceptor {
   @Override
   public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
       throws IOException {
-    response.setContentType("application/json;charset=utf-8");
     String token = request.getHeader("Authorization");
     if (token == null || token.trim().isEmpty()) {
       log.info("JWT validation failed: noToken");
+      response.setContentType("application/json;charset=utf-8");
       response.getWriter().print(getFailTokenJsonRes("No token",ResultCodeEnum.FETCH_TOKEN_FAILED));
       return false;
     }
@@ -40,6 +40,7 @@ public class LoginInterceptor implements HandlerInterceptor {
       Integer roleId = JwtUtil.getRoleIdFromToken(token);
       if (roleId != null) {
         if (isAdminPath(request.getRequestURI()) && !hasAdminPermission(roleId)) {
+          response.setContentType("application/json;charset=utf-8");
           response.getWriter().print(getFailTokenJsonRes(null, ResultCodeEnum.PERMISSION_DENIED));
           return false;
         }
@@ -60,6 +61,7 @@ public class LoginInterceptor implements HandlerInterceptor {
       log.error("Unknown token parsing error{}", e.getMessage());
     }
     log.info("JWT validation failed: {}", failInfo);
+    response.setContentType("application/json;charset=utf-8");
     response.getWriter().print(getFailTokenJsonRes(failInfo, ResultCodeEnum.FETCH_TOKEN_FAILED));
     return false;
   }

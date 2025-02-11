@@ -1,21 +1,15 @@
 package com.ling.chat.controller;
 
-import com.ling.chat.entity.RedisChatMemory;
-import com.ling.common.util.Result;
+import com.ling.chat.entity.ConversationRequest;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
-import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
-import org.springframework.ai.chat.messages.Message;
-import org.springframework.ai.chat.messages.SystemMessage;
-import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.ai.chat.model.ChatResponse;
-import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("chat")
@@ -23,16 +17,15 @@ import java.util.List;
 public class AiController {
 
   private final ChatClient chatClient;
+  private final ChatClient.Builder chatClientBuild;
   private final VectorStore vectorStore;
-  private final RedisChatMemory redisChatMemory;
-  private InMemoryChatMemory inMemoryChatMemory;
+  private final InMemoryChatMemory inMemoryChatMemory;
 
-  AiController(
-      ChatClient chatClient,
-      VectorStore vectorStore, RedisChatMemory redisChatMemory) {
+  AiController(ChatClient chatClient, ChatClient.Builder chatClientBuild, VectorStore vectorStore) {
     this.chatClient = chatClient;
+    this.chatClientBuild = chatClientBuild;
     this.vectorStore = vectorStore;
-    this.redisChatMemory = redisChatMemory;
+    inMemoryChatMemory = new InMemoryChatMemory();
   }
 
   @GetMapping("weather")
@@ -67,19 +60,28 @@ public class AiController {
         .chatResponse();
   }
 
-  @PostMapping("vecChat")
-  public Flux<ChatResponse> vecChat(@RequestBody List<Message> listMessage){
-    ChatClient.ChatClientRequestSpec chatClientRequestSpec=null;
-    if(listMessage==null|| listMessage.isEmpty()){
-      return null;
-    }else if(listMessage.size()==1){
-      chatClientRequestSpec = initContext(listMessage.get(0));
-    }else {
-      chatClientRequestSpec = chatClient.prompt(new Prompt(listMessage)).advisors(getDefaultAdvisor());
+  @GetMapping(value = "vec_chat",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+  public Flux<ChatResponse> vecChat(String conversationId, String message) {
+    ConversationRequest cr = new ConversationRequest(conversationId, message);
+    if (cr == null
+        || cr.getConversationId() == null
+        || cr.getConversationId().isEmpty()
+        || cr.getMessage() == null
+        || cr.getMessage().isEmpty()) {
+      return Flux.empty();
     }
+    ChatClient.ChatClientRequestSpec chatClientRequestSpec =
+        chatClient
+            .prompt()
+            .system("你是一个人工智能客服")
+            .user(cr.getMessage())
+            .advisors(
+                MessageChatMemoryAdvisor.builder(inMemoryChatMemory).conversationId(cr.getConversationId()).build(), getDefaultAdvisor());
+    System.out.println(inMemoryChatMemory.get(cr.getConversationId(), 10));
     return chatClientRequestSpec.stream().chatResponse();
   }
-  @PostMapping("test")
+
+  /*  @PostMapping("test")
   public Prompt test(){
     UserMessage userMessage = new UserMessage("用户消息");
     SystemMessage systemMessage = new SystemMessage("系统消息");
@@ -103,43 +105,31 @@ public class AiController {
     inMemoryChatMemory.add("1", new UserMessage(message));
     System.out.println(inMemoryChatMemory);
     return inMemoryChatMemory.get("1",10);
-  }
-  @PostMapping("test4")
-  public List<Message> test4(@RequestBody String message){
-    redisChatMemory.add("1", new UserMessage(message));
-    System.out.println(redisChatMemory);
-    return redisChatMemory.get("1",10);
-  }
-
-  private ChatClient.ChatClientRequestSpec initContext(Message userMessage){
-
-    Prompt initPrompt = new Prompt(new SystemMessage("你是一个人工智能研究生招生客服"));
-    return chatClient.prompt(initPrompt).advisors(getDefaultAdvisor()).user(userMessage.getText());
-  }
-
-  private QuestionAnswerAdvisor getDefaultAdvisor(){
-     return QuestionAnswerAdvisor.builder(vectorStore).userTextAdvise("""
+  }*/
+  private QuestionAnswerAdvisor getDefaultAdvisor() {
+    return QuestionAnswerAdvisor.builder(vectorStore)
+        .userTextAdvise(
+            """
+             你只有在必要时才使用下面的检索增强信息，检索增强信息每次都会提供给你，所以他一般与90%的对话无关
              上下文信息如下 ---------------------
-             
              ---------------------
              {question_answer_context}
              ---------------------
-             
-             根据上下文和提供的历史信息而不是先验知识
-             回复用户问题。如果答案不在上下文中，请告知
-             用户无法回答该问题。""").build();
+             你可以参考这些资料回答用户问题。
+             """)
+        .build();
   }
 
-
   /*
-   * 上下文信息如下 ---------------------
-   *
-   * ---------------------
-   * {question_answer_context}
-   * ---------------------
-   *
-   * 根据上下文和提供的历史信息而不是先验知识
-   * 回复用户问题。如果答案不在上下文中，请告知
-   * 用户无法回答该问题。
-   */
+           """
+            上下文信息如下 ---------------------
+            ---------------------
+            {question_answer_context}
+            ---------------------
+            根据上下文和提供的历史信息而不是先验知识
+            回复用户问题。如果答案不在上下文中，请告知
+            用户不知道答案。如果用户的问题与上下文无关，
+            请忽略上下文直接回答用户问题。
+            """
+  */
 }

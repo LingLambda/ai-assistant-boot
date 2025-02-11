@@ -19,6 +19,10 @@ import java.util.List;
  * @author LingLambda
  * @since 2025/1/20 22:13
  */
+
+
+//TODO: 由于Message类不支持序列化，暂缓Redis缓存
+/*
 @Configuration
 public class RedisChatMemoryConfiguration {
 
@@ -28,8 +32,8 @@ public class RedisChatMemoryConfiguration {
     return new JedisConnectionFactory(redisStandaloneConfiguration);
   }
 
-  @Bean(name = "chatMemoryTemplate")
-  public RedisTemplate<String, Message> chatMemoryTemplate(@Qualifier("chatMemoryRedisConnectionFactory") RedisConnectionFactory redisConnectionFactory) {
+  @Bean
+  public RedisTemplate<String, Message> redisTemplate(@Qualifier("chatMemoryRedisConnectionFactory") RedisConnectionFactory redisConnectionFactory) {
     RedisTemplate<String, Message> template = new RedisTemplate<>();
     template.setConnectionFactory(redisConnectionFactory);
     // 使用String序列化器序列化key
@@ -44,3 +48,4 @@ public class RedisChatMemoryConfiguration {
     return template;
   }
 }
+*/

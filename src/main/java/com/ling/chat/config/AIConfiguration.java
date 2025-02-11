@@ -54,4 +54,24 @@ public class AIConfiguration {
             RetryUtils.DEFAULT_RETRY_TEMPLATE);
     return ChatClient.builder(chatModel).build();
   }
+
+  @Bean
+  public ChatClient.Builder lingClientBuild(ApplicationContext applicationContext) {
+    DefaultFunctionCallbackResolver functionCallbackResolver =
+        new DefaultFunctionCallbackResolver();
+    functionCallbackResolver.setApplicationContext(applicationContext);
+    OpenAiApi openAiApi = new OpenAiApi(baseurl, apiKey);
+    OpenAiChatOptions openAiChatOptions = new OpenAiChatOptions();
+    openAiChatOptions.setModel(chatModelName);
+    openAiChatOptions.setMaxTokens(chatMaxTokens);
+    openAiChatOptions.setTemperature(temperature);
+    openAiChatOptions.setStreamOptions(new OpenAiApi.ChatCompletionRequest.StreamOptions(true));
+    OpenAiChatModel chatModel =
+        new OpenAiChatModel(
+            openAiApi,
+            openAiChatOptions,
+            functionCallbackResolver,
+            RetryUtils.DEFAULT_RETRY_TEMPLATE);
+    return ChatClient.builder(chatModel);
+  }
 }

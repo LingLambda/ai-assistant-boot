@@ -31,6 +31,9 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### Resource ###
+**/resources/application-dev.yml
+
 ### VS Code ###
 .vscode/
 

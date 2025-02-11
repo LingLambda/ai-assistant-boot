@@ -33,6 +33,7 @@ build/
 
 ### Resource ###
 src/main/resources/application-dev.yml
+logs/**
 
 ### VS Code ###
 .vscode/

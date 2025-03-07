@@ -4,6 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ling.common.exception.ChunkTextException;
 import io.swagger.v3.oas.annotations.servers.Server;
+import java.io.IOException;
+import java.util.*;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -23,6 +25,31 @@ import java.util.*;
 public class ChunkUtil {
 
   private static final Logger log = LoggerFactory.getLogger(ChunkUtil.class);
+
+  /**
+   * @param file 需要切割的文本文件，支持markdown，txt等纯文本格式
+   */
+  public static List<Document> textChunks(MultipartFile file) throws IOException, ChunkTextException {
+    try {
+      String stringText = Arrays.toString(file.getBytes());
+      return textChunks(stringText);
+    } catch (IOException e) {
+      log.error("ToStringError:{}", e.getMessage());
+      throw e;
+    }
+  }
+
+  /**
+   * @param stringText 需要切割的文本
+   */
+  public static List<Document> textChunks(String stringText) throws ChunkTextException {
+    List<String> strings = chunkText(stringText, 300, 1000);
+    List<Document> documentList = new ArrayList<>();
+    for (String string : strings) {
+      documentList.add(Document.builder().id(UUID.randomUUID().toString()).text(string).build());
+    }
+    return documentList;
+  }
 
   /**
    * 将pdf分割为向量存储数据类型

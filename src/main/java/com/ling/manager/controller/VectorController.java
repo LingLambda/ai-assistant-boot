@@ -1,5 +1,6 @@
 package com.ling.manager.controller;
 
+import com.ling.common.entity.TextObj;
 import com.ling.common.util.Result;
 import com.ling.common.util.ResultCodeEnum;
 import com.ling.common.exception.ChunkTextException;
@@ -79,10 +80,28 @@ public class VectorController {
     }
   }
 
+  @PostMapping("vector/add_text")
+  public Result<?> addData(@RequestBody TextObj textObj) {
+    String stringText = textObj.getStringText();
+    if (stringText == null || stringText.isEmpty()) {
+      return Result.build("上传的数据为空", ResultCodeEnum.FAIL);
+    }
+    try {
+      List<Document> documentList = ChunkUtil.textChunks(stringText);
+      vectorStore.add(documentList);
+      return Result.build("文本上传成功", ResultCodeEnum.SUCCESS);
+    } catch (ChunkTextException e) {
+      return Result.build("上传失败，切分错误" + e.getMessage(), ResultCodeEnum.FILE_CHUNK_ERROR);
+    } catch (Exception e) {
+      log.error("上传失败，未知错误", e);
+      return Result.build("上传失败" + "未知内部错误", ResultCodeEnum.FAIL);
+    }
+  }
+
   @PostMapping("vector/delete")
   private Result<?> deleteDate(@RequestBody List<String> idList) {
     try {
-      if(idList==null|| idList.isEmpty()){
+      if (idList == null || idList.isEmpty()) {
         return Result.build("选择为空", ResultCodeEnum.FAIL);
       }
       Optional<Boolean> delete = vectorStore.delete(idList);

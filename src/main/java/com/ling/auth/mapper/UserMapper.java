@@ -13,6 +13,7 @@ public interface UserMapper extends BaseMapper<User> {
 
   /**
    * 根据username查user与user的role
+   *
    * @param username 用户名
    */
   User queryUserAndRole(String username);

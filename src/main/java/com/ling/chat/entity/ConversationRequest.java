@@ -1,14 +1,13 @@
 package com.ling.chat.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 /**
  * @author LingLambda
  * @since 2025/1/21 00:03
  */
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.springframework.ai.chat.messages.Message;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

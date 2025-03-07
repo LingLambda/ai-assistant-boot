@@ -9,6 +9,4 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2025/1/514:08
  */
 @Mapper
-public interface RoleMapper extends BaseMapper<Role>{
-
-}
+public interface RoleMapper extends BaseMapper<Role> {}

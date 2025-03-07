@@ -8,6 +8,7 @@ import java.util.Formatter;
 public class SHA256SaltedUtil {
   /**
    * 使用 SHA-256 算法加盐后对字符串进行加密
+   *
    * @param input 输入的字符串
    * @param salt 盐值
    * @return 加密后的 SHA-256 哈希值
@@ -26,8 +27,10 @@ public class SHA256SaltedUtil {
     // 将字节数组转换为十六进制字符串
     return byteArrayToHex(hash);
   }
+
   /**
    * 将字节数组转换为十六进制字符串
+   *
    * @param byteArray 字节数组
    * @return 十六进制字符串
    */
@@ -43,6 +46,7 @@ public class SHA256SaltedUtil {
 
   /**
    * 生成一个随机盐值
+   *
    * @return 随机盐值
    */
   public static String generateSalt(int length) {

@@ -11,6 +11,6 @@ import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 @SpringBootApplication(exclude = RedisAutoConfiguration.class)
 public class Application {
   public static void main(String[] args) {
-    SpringApplication.run(Application.class,args);
+    SpringApplication.run(Application.class, args);
   }
 }

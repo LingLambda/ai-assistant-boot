@@ -60,7 +60,7 @@ public class AiController {
         .chatResponse();
   }
 
-  @GetMapping(value = "vec_chat",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+  @GetMapping(value = "vec_chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<ChatResponse> vecChat(String conversationId, String message) {
     ConversationRequest cr = new ConversationRequest(conversationId, message);
     if (cr == null
@@ -76,7 +76,10 @@ public class AiController {
             .system("你是一个人工智能客服")
             .user(cr.getMessage())
             .advisors(
-                MessageChatMemoryAdvisor.builder(inMemoryChatMemory).conversationId(cr.getConversationId()).build(), getDefaultAdvisor());
+                MessageChatMemoryAdvisor.builder(inMemoryChatMemory)
+                    .conversationId(cr.getConversationId())
+                    .build(),
+                getDefaultAdvisor());
     System.out.println(inMemoryChatMemory.get(cr.getConversationId(), 10));
     return chatClientRequestSpec.stream().chatResponse();
   }

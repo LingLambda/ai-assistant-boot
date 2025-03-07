@@ -12,19 +12,21 @@ import redis.clients.jedis.JedisPooled;
 @Configuration
 public class JedisConfiguration {
 
-//  @Value("${spring.data.redis.username}")
+  //  @Value("${spring.data.redis.username}")
   private String username;
-//  @Value("${spring.data.redis.password}")
+  //  @Value("${spring.data.redis.password}")
   private String password;
+
   @Value("${spring.data.redis.host}")
   private String host;
+
   @Value("${spring.data.redis.port}")
   private int port;
 
   @Bean
   public JedisPooled jedisPooled() {
-    if(username==null||password==null){
-      return new JedisPooled(host,port);
+    if (username == null || password == null) {
+      return new JedisPooled(host, port);
     }
     return new JedisPooled(host, port, username, password);
   }

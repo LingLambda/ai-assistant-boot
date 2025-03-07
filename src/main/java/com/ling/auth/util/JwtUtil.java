@@ -3,14 +3,13 @@ package com.ling.auth.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Map;
+import javax.crypto.SecretKey;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 @Component
 public class JwtUtil {
@@ -22,7 +21,8 @@ public class JwtUtil {
   }
 
   // 生成 JWT
-  public static String generateJwt(String username,Integer roleId,String roleName) throws NoSuchAlgorithmException {
+  public static String generateJwt(String username, Integer roleId, String roleName)
+      throws NoSuchAlgorithmException {
     SecretKey key = Keys.hmacShaKeyFor(keyByte);
 
     long nowMillis = System.currentTimeMillis();
@@ -31,9 +31,9 @@ public class JwtUtil {
     Date exp = new Date(expMillis);
 
     return Jwts.builder()
-        .subject(username)  // 主题，可以是用户 ID 或其他标识符
-        .claims(Map.of("roleId",roleId,"roleName",roleName))
-        .issuedAt(now)  // 签发时间
+        .subject(username) // 主题，可以是用户 ID 或其他标识符
+        .claims(Map.of("roleId", roleId, "roleName", roleName))
+        .issuedAt(now) // 签发时间
         .expiration(exp) // 过期时间
         .signWith(key)
         .compact();

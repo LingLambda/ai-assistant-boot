@@ -7,7 +7,7 @@ package com.ling.common.exception;
 public class ChunkTextException extends Exception {
 
   public ChunkTextException(String message) {
-    super("字符串切割错误!"+message);
+    super("字符串切割错误!" + message);
   }
 
   public ChunkTextException() {

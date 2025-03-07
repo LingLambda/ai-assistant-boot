@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @TableName("role")
 public class Role {
-  @TableId
-  private Integer id;
+  @TableId private Integer id;
   private String roleName;
 }

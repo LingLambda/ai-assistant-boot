@@ -1,17 +1,6 @@
 package com.ling.chat.entity;
 
-import jakarta.annotation.Resource;
-import org.springframework.ai.chat.memory.ChatMemory;
-import org.springframework.ai.chat.messages.Message;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import redis.clients.jedis.JedisPool;
-
-import java.util.List;
-
-//TODO: 由于Message类不支持序列化，暂缓Redis缓存
+// TODO: 由于Message类不支持序列化，暂缓Redis缓存
 
 /*@Component
 public class RedisChatMemory implements ChatMemory {

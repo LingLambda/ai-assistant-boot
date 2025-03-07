@@ -1,23 +1,21 @@
 package com.ling.manager.controller;
 
 import com.ling.common.entity.TextObj;
+import com.ling.common.exception.ChunkTextException;
 import com.ling.common.util.Result;
 import com.ling.common.util.ResultCodeEnum;
-import com.ling.common.exception.ChunkTextException;
 import com.ling.manager.utils.ChunkUtil;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 /**
  * @author LingLambda
@@ -46,14 +44,14 @@ public class VectorController {
               SearchRequest.builder().query(message).topK(topK).build());
       return Result.build(documentList, ResultCodeEnum.SUCCESS);
     } catch (Exception e) {
-      log.error("未知错误",e);
+      log.error("未知错误", e);
       return Result.build("未知内部错误", ResultCodeEnum.FAIL);
     }
   }
 
   @PostMapping("vector/add")
   public Result<?> addData(@RequestBody MultipartFile[] file) {
-    if(file==null||file.length==0){
+    if (file == null || file.length == 0) {
       return Result.build("上传的文件列表为空", ResultCodeEnum.FAIL);
     }
     int count = 0;
@@ -71,12 +69,12 @@ public class VectorController {
       }
       return Result.build("全部上传成功", ResultCodeEnum.SUCCESS);
     } catch (ChunkTextException e) {
-      return Result.build(count+"个文件上传成功"+e.getMessage(), ResultCodeEnum.FILE_CHUNK_ERROR);
+      return Result.build(count + "个文件上传成功" + e.getMessage(), ResultCodeEnum.FILE_CHUNK_ERROR);
     } catch (IOException e) {
-      return Result.build(count+"个文件上传成功"+e.getMessage(), ResultCodeEnum.FILE_IO_ERROR);
+      return Result.build(count + "个文件上传成功" + e.getMessage(), ResultCodeEnum.FILE_IO_ERROR);
     } catch (Exception e) {
       log.error("{}个文件上传成功", count, e);
-      return Result.build(count+"个文件上传成功"+"未知内部错误", ResultCodeEnum.FAIL);
+      return Result.build(count + "个文件上传成功" + "未知内部错误", ResultCodeEnum.FAIL);
     }
   }
 
@@ -110,7 +108,7 @@ public class VectorController {
       }
       return Result.build("删除成功", ResultCodeEnum.SUCCESS);
     } catch (Exception e) {
-      log.error("未知错误",e);
+      log.error("未知错误", e);
       return Result.build("未知内部错误", ResultCodeEnum.FAIL);
     }
   }

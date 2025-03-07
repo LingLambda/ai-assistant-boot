@@ -18,8 +18,10 @@ public class ModelConfiguration {
 
   @Value("${ling.ai.baseurl}")
   private String baseurl;
+
   @Value("${ling.ai.api-key}")
   private String apiKey;
+
   @Value("${ling.ai.embedding.model}")
   private String embeddingModelName;
 
@@ -30,5 +32,4 @@ public class ModelConfiguration {
     embeddingOptions.setModel(embeddingModelName);
     return new OpenAiEmbeddingModel(openAiApi, MetadataMode.EMBED, embeddingOptions);
   }
-
 }

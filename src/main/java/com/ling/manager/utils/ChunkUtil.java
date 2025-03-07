@@ -14,9 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.*;
-
 /**
  * @author LingLambda
  * @date 2025/1/414:12
@@ -29,7 +26,8 @@ public class ChunkUtil {
   /**
    * @param file 需要切割的文本文件，支持markdown，txt等纯文本格式
    */
-  public static List<Document> textChunks(MultipartFile file) throws IOException, ChunkTextException {
+  public static List<Document> textChunks(MultipartFile file)
+      throws IOException, ChunkTextException {
     try {
       String stringText = Arrays.toString(file.getBytes());
       return textChunks(stringText);
@@ -78,7 +76,11 @@ public class ChunkUtil {
       List<Document> documentList = new ArrayList<>();
       int idSuffix = 0;
       for (String string : strings) {
-        documentList.add(Document.builder().id(getFileNameWithoutExtension(file.getOriginalFilename())+idSuffix).text(string).build());
+        documentList.add(
+            Document.builder()
+                .id(getFileNameWithoutExtension(file.getOriginalFilename()) + idSuffix)
+                .text(string)
+                .build());
         idSuffix++;
       }
       return documentList;
@@ -91,7 +93,7 @@ public class ChunkUtil {
   // 函数：从后往前查找 `.` 并返回 `.` 之前的部分
   private static String getFileNameWithoutExtension(String fileName) {
     if (fileName == null || fileName.isEmpty()) {
-      return fileName;  // 如果文件名为空，直接返回空
+      return fileName; // 如果文件名为空，直接返回空
     }
 
     // 查找最后一个 `.` 的位置
@@ -111,7 +113,8 @@ public class ChunkUtil {
    *
    * @param file file文件
    */
-  public static List<Document> jsonChunks(MultipartFile file) throws ChunkTextException, IOException {
+  public static List<Document> jsonChunks(MultipartFile file)
+      throws ChunkTextException, IOException {
     return jsonChunks(file, 1000);
   }
 
@@ -139,7 +142,7 @@ public class ChunkUtil {
       while (jnEl.hasNext()) {
         Iterator<Map.Entry<String, JsonNode>> fields = jnEl.next().fields();
         List<Document> ds = jsonItemChunk(fields, file.getOriginalFilename(), bigCount);
-        if(null != ds){
+        if (null != ds) {
           documentList.addAll(ds);
         }
       }
@@ -155,7 +158,7 @@ public class ChunkUtil {
       throws ChunkTextException {
     List<Document> documentList = new ArrayList<>();
     Document.Builder builder = Document.builder().id(fileName).text("");
-    while (item.hasNext()){
+    while (item.hasNext()) {
       Map.Entry<String, JsonNode> s = item.next();
       JsonNode value = s.getValue();
       if (value.isObject()) {
@@ -170,8 +173,8 @@ public class ChunkUtil {
       }
     }
     String text = builder.build().getText();
-    if(text.isEmpty()){
-      //如果text为空，直接跳出
+    if (text.isEmpty()) {
+      // 如果text为空，直接跳出
       return null;
     }
     // 处理正文过长

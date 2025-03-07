@@ -14,10 +14,11 @@
             <result property="roleName" column="role_name"/>
         </association>
     </resultMap>
-    
+
     <select id="queryUserAndRole" resultMap="UserMap">
-        select user.username,user.password,user.salt,role.id as role_id,role.role_name
-        from user left join role on user.role_id = role.id
+        select user.username, user.password, user.salt, role.id as role_id, role.role_name
+        from user
+                 left join role on user.role_id = role.id
         where user.username = #{username};
     </select>
 </mapper>

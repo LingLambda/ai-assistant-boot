@@ -2,11 +2,10 @@ package com.ling.chat.config;
 
 import com.ling.chat.functions.BookService;
 import com.ling.chat.functions.WeatherService;
+import java.util.function.Function;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Description;
-
-import java.util.function.Function;
 
 @Configuration(proxyBeanMethods = false)
 public class FunctionsConfiguration {

@@ -64,7 +64,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
       String salt = SHA256SaltedUtil.generateSalt(16);
       String saltPwd = null;
       saltPwd = SHA256SaltedUtil.sha256WithSalt(user.getPassword(), salt);
-      if (userMapper.insert(new User(null, user.getUsername(), saltPwd, 1, salt, null)) != 0) {
+      User user1 = new User();
+      user1.setUsername(user.getUsername());
+      user1.setPassword(saltPwd);
+      user1.setRoleId(1);
+      user1.setSalt(salt);
+      if (userMapper.insert(user1) != 0) {
         return true;
       }
     } catch (NoSuchAlgorithmException e) {

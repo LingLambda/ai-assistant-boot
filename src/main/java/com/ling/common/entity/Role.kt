@@ -1,16 +1,14 @@
-package com.ling.common.entity;
+package com.ling.common.entity
 
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+import com.baomidou.mybatisplus.annotation.TableId
+import com.baomidou.mybatisplus.annotation.TableName
+/**
+ *@author LingLambda
+ *@since 2025/3/7 14:11
+ */
 @TableName("role")
-public class Role {
-  @TableId private Integer id;
-  private String roleName;
+class Role {
+    @TableId
+    var id: Int? = null
+    var roleName: String? = null
 }

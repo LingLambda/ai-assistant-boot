@@ -1,17 +1,10 @@
-package com.ling.chat.entity;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package com.ling.chat.entity
 
 /**
  * @author LingLambda
  * @since 2025/1/21 00:03
  */
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class ConversationRequest {
-  private String conversationId;
-  private String message;
-}
+data class ConversationRequest(
+    var conversationId: String? = null,
+    var message: String? = null
+)

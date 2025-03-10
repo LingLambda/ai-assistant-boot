@@ -1,23 +1,18 @@
-package com.ling.common.entity;
+package com.ling.common.entity
 
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
-import com.baomidou.mybatisplus.annotation.TableName;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.baomidou.mybatisplus.annotation.TableField
+import com.baomidou.mybatisplus.annotation.TableId
+import com.baomidou.mybatisplus.annotation.TableName
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @TableName("user")
-public class User {
-  @TableId private Long id;
-  private String username;
-  private String password;
-  private Integer roleId;
-  private String salt;
+class User {
+    @TableId
+    var id: Long? = null
+    var username: String? = null
+    var password: String? = null
+    var roleId: Int? = null
+    var salt: String? = null
 
-  @TableField(exist = false)
-  private Role role;
+    @TableField(exist = false)
+    var role: Role? = null
 }

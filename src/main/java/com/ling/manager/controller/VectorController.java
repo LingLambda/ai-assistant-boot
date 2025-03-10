@@ -8,7 +8,6 @@ import com.ling.manager.utils.ChunkUtil;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
@@ -102,10 +101,10 @@ public class VectorController {
       if (idList == null || idList.isEmpty()) {
         return Result.build("选择为空", ResultCodeEnum.FAIL);
       }
-      Optional<Boolean> delete = vectorStore.delete(idList);
-      if (!delete.orElse(false)) {
-        return Result.build("id可能不存在", ResultCodeEnum.FILE_DELETE_ERROR);
-      }
+      vectorStore.delete(idList);
+//      if (!delete.orElse(false)) {
+//        return Result.build("id可能不存在", ResultCodeEnum.FILE_DELETE_ERROR);
+//      }
       return Result.build("删除成功", ResultCodeEnum.SUCCESS);
     } catch (Exception e) {
       log.error("未知错误", e);

@@ -1,6 +1,9 @@
 package com.ling.chat.controller;
 
 import com.ling.chat.entity.ConversationRequest;
+import com.ling.chat.tools.BookTools;
+import com.ling.chat.tools.DateTimeTools;
+import com.ling.chat.tools.WeatherTools;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
@@ -34,7 +37,17 @@ public class AiController {
     return chatClient
         .prompt()
         .user(userSpec -> userSpec.text(userPromptTemplate).param("cityName", city))
-        .functions("weatherByCity")
+        .tools("weatherByCity")
+        .call()
+        .content();
+  }
+
+  @GetMapping("time")
+  String chatTime() {
+    var userPromptTemplate = "现在几点了，我的时区是哪里，北京天气咋样";
+    return chatClient
+        .prompt(userPromptTemplate)
+        .tools(new DateTimeTools(), new WeatherTools())
         .call()
         .content();
   }
@@ -45,7 +58,7 @@ public class AiController {
     return chatClient
         .prompt()
         .user(userSpec -> userSpec.text(userPromptTemplate).param("author", author))
-        .functions("booksByAuthor")
+        .tools(new BookTools())
         .call()
         .content();
   }
@@ -54,6 +67,7 @@ public class AiController {
   public ChatResponse vecChat(String message) {
     return chatClient
         .prompt()
+        .user(message)
         .advisors(new QuestionAnswerAdvisor(vectorStore))
         .user(message)
         .call()
@@ -63,8 +77,7 @@ public class AiController {
   @GetMapping(value = "vec_chat", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
   public Flux<ChatResponse> vecChat(String conversationId, String message) {
     ConversationRequest cr = new ConversationRequest(conversationId, message);
-    if (cr == null
-        || cr.getConversationId() == null
+    if (cr.getConversationId() == null
         || cr.getConversationId().isEmpty()
         || cr.getMessage() == null
         || cr.getMessage().isEmpty()) {
@@ -73,7 +86,7 @@ public class AiController {
     ChatClient.ChatClientRequestSpec chatClientRequestSpec =
         chatClient
             .prompt()
-            .system("你是一个人工智能客服")
+            .system("你是一名人工智能客服")
             .user(cr.getMessage())
             .advisors(
                 MessageChatMemoryAdvisor.builder(inMemoryChatMemory)
@@ -84,36 +97,11 @@ public class AiController {
     return chatClientRequestSpec.stream().chatResponse();
   }
 
-  /*  @PostMapping("test")
-  public Prompt test(){
-    UserMessage userMessage = new UserMessage("用户消息");
-    SystemMessage systemMessage = new SystemMessage("系统消息");
-    System.out.println(userMessage);
-    System.out.println(systemMessage);
-    return new Prompt(List.of(userMessage,systemMessage));
-  }
-  @PostMapping("test2")
-  public List<Message> test2(){
-    UserMessage userMessage = new UserMessage("用户消息");
-    SystemMessage systemMessage = new SystemMessage("系统消息");
-    System.out.println(userMessage);
-    System.out.println(systemMessage);
-    return List.of(userMessage,systemMessage);
-  }
-  @PostMapping("test3")
-  public List<Message> test3(@RequestBody String message){
-    if(inMemoryChatMemory==null){
-      inMemoryChatMemory = new InMemoryChatMemory();
-    }
-    inMemoryChatMemory.add("1", new UserMessage(message));
-    System.out.println(inMemoryChatMemory);
-    return inMemoryChatMemory.get("1",10);
-  }*/
   private QuestionAnswerAdvisor getDefaultAdvisor() {
     return QuestionAnswerAdvisor.builder(vectorStore)
         .userTextAdvise(
             """
-             你只有在必要时才使用下面的检索增强信息，检索增强信息每次都会提供给你，所以他一般与90%的对话无关
+             你只有在必要时才使用下面的检索增强信息，检索增强信息每次都会提供给你，一般与90%的对话无关
              上下文信息如下 ---------------------
              ---------------------
              {question_answer_context}
@@ -121,18 +109,17 @@ public class AiController {
              你可以参考这些资料回答用户问题。
              """)
         .build();
+    /*
+             """
+              上下文信息如下 ---------------------
+              ---------------------
+              {question_answer_context}
+              ---------------------
+              根据上下文和提供的历史信息而不是先验知识
+              回复用户问题。如果答案不在上下文中，请告知
+              用户不知道答案。如果用户的问题与上下文无关，
+              请忽略上下文直接回答用户问题。
+              """
+    */
   }
-
-  /*
-           """
-            上下文信息如下 ---------------------
-            ---------------------
-            {question_answer_context}
-            ---------------------
-            根据上下文和提供的历史信息而不是先验知识
-            回复用户问题。如果答案不在上下文中，请告知
-            用户不知道答案。如果用户的问题与上下文无关，
-            请忽略上下文直接回答用户问题。
-            """
-  */
 }

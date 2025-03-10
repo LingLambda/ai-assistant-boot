@@ -18,7 +18,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.4.2-SNAPSHOT</version>
+        <version>3.4.2</version>
     </parent>
 
     <dependencyManagement>
@@ -26,7 +26,7 @@
             <dependency>
                 <groupId>org.springframework.ai</groupId>
                 <artifactId>spring-ai-bom</artifactId>
-                <version>1.0.0-M5</version>
+                <version>1.0.0-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -43,7 +43,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
-            <scope>development</scope>
+            <scope>runtime</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -73,7 +73,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>development</scope> <!-- 开发环境需要 -->
+            <scope>test</scope> <!-- 开发环境需要 -->
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -85,8 +85,8 @@
             <artifactId>spring-boot-starter-jdbc</artifactId>
         </dependency>
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
+            <groupId>com.mysql</groupId>
+            <artifactId>mysql-connector-j</artifactId>
             <version>8.0.33</version>
         </dependency>
         <dependency>
@@ -129,7 +129,7 @@
             <name>Spring Snapshots</name>
             <url>https://repo.spring.io/snapshot</url>
             <releases>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </releases>
         </repository>
 
@@ -168,6 +168,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <main>com.ling.KtApplication.kt</main>
                     <jvmTarget>${maven.compiler.target}</jvmTarget>
                 </configuration>
             </plugin>
@@ -199,8 +200,15 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Spring Boot Maven 插件：打包成可执行 JAR -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 可选：指定主类 -->
+                    <mainClass>com.ling.KtApplicationKt</mainClass>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
-
-
 </project>

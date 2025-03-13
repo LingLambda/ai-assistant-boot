@@ -27,7 +27,7 @@ public class ModelConfiguration {
 
   @Bean
   public EmbeddingModel EmbeddingModel() {
-    OpenAiApi openAiApi = new OpenAiApi(baseurl, apiKey);
+    OpenAiApi openAiApi = OpenAiApi.builder().baseUrl(baseurl).apiKey(apiKey).build();
     OpenAiEmbeddingOptions embeddingOptions = new OpenAiEmbeddingOptions();
     embeddingOptions.setModel(embeddingModelName);
     return new OpenAiEmbeddingModel(openAiApi, MetadataMode.EMBED, embeddingOptions);

@@ -1,15 +1,20 @@
 package com.ling.chat.config;
 
+import io.micrometer.observation.ObservationRegistry;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.model.function.DefaultFunctionCallbackResolver;
+import org.springframework.ai.model.tool.DefaultToolCallingManager;
+import org.springframework.ai.model.tool.ToolCallingManager;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.ai.retry.RetryUtils;
+import org.springframework.ai.tool.resolution.SpringBeanToolCallbackResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.GenericApplicationContext;
 
 @Configuration
 public class AIConfiguration {
@@ -33,41 +38,27 @@ public class AIConfiguration {
 
   @Bean
   public ChatClient lingClient(ApplicationContext applicationContext) {
-    DefaultFunctionCallbackResolver functionCallbackResolver =
-        new DefaultFunctionCallbackResolver();
-    functionCallbackResolver.setApplicationContext(applicationContext);
-    OpenAiApi openAiApi = new OpenAiApi(baseurl, apiKey);
-    OpenAiChatOptions openAiChatOptions = new OpenAiChatOptions();
-    openAiChatOptions.setModel(chatModelName);
-    openAiChatOptions.setMaxTokens(chatMaxTokens);
-    openAiChatOptions.setTemperature(temperature);
-    openAiChatOptions.setStreamOptions(new OpenAiApi.ChatCompletionRequest.StreamOptions(true));
-    OpenAiChatModel chatModel =
-        new OpenAiChatModel(
-            openAiApi,
-            openAiChatOptions,
-            functionCallbackResolver,
-            RetryUtils.DEFAULT_RETRY_TEMPLATE);
-    return ChatClient.builder(chatModel).build();
+    return lingClientBuild(applicationContext).build();
   }
 
   @Bean
   public ChatClient.Builder lingClientBuild(ApplicationContext applicationContext) {
-    DefaultFunctionCallbackResolver functionCallbackResolver =
-        new DefaultFunctionCallbackResolver();
-    functionCallbackResolver.setApplicationContext(applicationContext);
-    OpenAiApi openAiApi = new OpenAiApi(baseurl, apiKey);
+    OpenAiApi openAiApi = OpenAiApi.builder().baseUrl(baseurl).apiKey(apiKey).build();
     OpenAiChatOptions openAiChatOptions = new OpenAiChatOptions();
     openAiChatOptions.setModel(chatModelName);
     openAiChatOptions.setMaxTokens(chatMaxTokens);
     openAiChatOptions.setTemperature(temperature);
     openAiChatOptions.setStreamOptions(new OpenAiApi.ChatCompletionRequest.StreamOptions(true));
-    OpenAiChatModel chatModel =
-        new OpenAiChatModel(
-            openAiApi,
-            openAiChatOptions,
-            functionCallbackResolver,
-            RetryUtils.DEFAULT_RETRY_TEMPLATE);
+    SpringBeanToolCallbackResolver resolver =
+        SpringBeanToolCallbackResolver.builder()
+            .applicationContext(new GenericApplicationContext(applicationContext))
+            .build();
+    ToolCallingManager toolCallingManager = ToolCallingManager.builder().toolCallbackResolver(resolver).build();
+    OpenAiChatModel chatModel = OpenAiChatModel.builder()
+        .openAiApi(openAiApi)
+        .defaultOptions(openAiChatOptions)
+        .toolCallingManager(toolCallingManager)
+        .build();
     return ChatClient.builder(chatModel);
   }
 }

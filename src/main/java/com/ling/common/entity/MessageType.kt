@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.annotation.TableName
 
 /**
  *@author LingLambda
- *@since 2025/3/7 14:11
+ *@since 2025/3/13 19:02
  */
-@TableName("role")
-class Role {
+@TableName("message_type")
+class MessageType {
     @TableId
     var id: Int? = null
-    var roleName: String? = null
+    var messageType: String? = null
 }

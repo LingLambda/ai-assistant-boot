@@ -102,9 +102,9 @@ public class VectorController {
         return Result.build("选择为空", ResultCodeEnum.FAIL);
       }
       vectorStore.delete(idList);
-//      if (!delete.orElse(false)) {
-//        return Result.build("id可能不存在", ResultCodeEnum.FILE_DELETE_ERROR);
-//      }
+      //      if (!delete.orElse(false)) {
+      //        return Result.build("id可能不存在", ResultCodeEnum.FILE_DELETE_ERROR);
+      //      }
       return Result.build("删除成功", ResultCodeEnum.SUCCESS);
     } catch (Exception e) {
       log.error("未知错误", e);

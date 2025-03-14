@@ -32,7 +32,7 @@ public class VectorController {
     this.vectorStore = vectorStore;
   }
 
-  @GetMapping("vector/query") // restful
+  @GetMapping("vector/query")
   public Result<?> vectorQuery(@RequestParam String message, @RequestParam("top_k") Integer topK) {
     try {
       if (topK == null) {

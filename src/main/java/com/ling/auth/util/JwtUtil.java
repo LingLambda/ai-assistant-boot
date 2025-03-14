@@ -7,6 +7,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import javax.crypto.SecretKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class JwtUtil {
 
+  // token有效时间72小时
+  private final static long EXP = TimeUnit.HOURS.toMillis(72);
   private static byte[] keyByte;
 
   public JwtUtil(@Value("${ling.jwt.token}") String secretKey) {
@@ -27,7 +30,7 @@ public class JwtUtil {
 
     long nowMillis = System.currentTimeMillis();
     Date now = new Date(nowMillis);
-    long expMillis = nowMillis + 3600000;
+    long expMillis = nowMillis + EXP;
     Date exp = new Date(expMillis);
 
     return Jwts.builder()
@@ -49,5 +52,10 @@ public class JwtUtil {
   public static Integer getRoleIdFromToken(String token) {
     Claims claims = parseJwt(token);
     return claims.get("roleId", Integer.class);
+  }
+
+  public static Long getUserIdFromToken(String token){
+    Claims claims = parseJwt(token);
+    return claims.get("userId", Long.class);
   }
 }

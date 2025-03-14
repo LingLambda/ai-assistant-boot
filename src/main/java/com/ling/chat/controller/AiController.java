@@ -31,38 +31,6 @@ public class AiController {
     inMemoryChatMemory = new InMemoryChatMemory();
   }
 
-  @GetMapping("weather")
-  String chat(@RequestParam String city) {
-    var userPromptTemplate = "现在{cityName}的天气怎么样？";
-    return chatClient
-        .prompt()
-        .user(userSpec -> userSpec.text(userPromptTemplate).param("cityName", city))
-        .tools("weatherByCity")
-        .call()
-        .content();
-  }
-
-  @GetMapping("time")
-  String chatTime() {
-    var userPromptTemplate = "现在几点了，我的时区是哪里，北京天气咋样";
-    return chatClient
-        .prompt(userPromptTemplate)
-        .tools(new DateTimeTools(), new WeatherTools())
-        .call()
-        .content();
-  }
-
-  @GetMapping("book")
-  String chatBook(@RequestParam String author) {
-    var userPromptTemplate = "What books written by {author} are available in the library?";
-    return chatClient
-        .prompt()
-        .user(userSpec -> userSpec.text(userPromptTemplate).param("author", author))
-        .tools(new BookTools())
-        .call()
-        .content();
-  }
-
   @GetMapping("vector")
   public ChatResponse vecChat(String message) {
     return chatClient

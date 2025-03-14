@@ -12,7 +12,7 @@ import com.baomidou.mybatisplus.annotation.TableName
 class RoomMessage {
     @TableId
     var id: Long? = null
-    var roomId: Long? = null
+    var roomId: String? = null
     var message: String? = null
     var messageTypeId: Int? = null
 

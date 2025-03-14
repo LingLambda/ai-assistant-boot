@@ -1,5 +1,6 @@
 package com.ling.common.entity
 
+import com.baomidou.mybatisplus.annotation.IdType
 import com.baomidou.mybatisplus.annotation.TableField
 import com.baomidou.mybatisplus.annotation.TableId
 import com.baomidou.mybatisplus.annotation.TableName
@@ -11,8 +12,8 @@ import java.time.LocalDateTime
  */
 @TableName("room")
 class Room {
-    @TableId
-    var id: Long? = null
+    @TableId(type =  IdType.INPUT)
+    var id: String? = null
     var createTime: LocalDateTime? = null
     var updateTime: LocalDateTime? = null
     var userId: Long? = null

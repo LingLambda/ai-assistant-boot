@@ -11,7 +11,8 @@ class BookTools {
     @Tool(description = "Get the list of books written by the given author available in the library")
     fun getBooksByAuthor(author: Author): BookList {
         return BookList(
-            books.values.filter { book: Book -> author.name == book.author }.toList()
+            books.values.filter { book: Book -> author.name == book.author }
+                .toList()
         )
     }
 

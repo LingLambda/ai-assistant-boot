@@ -155,7 +155,8 @@
                         <configuration>
                             <sourceDirs>
                                 <source>src/main/java</source>
-                                <source>target/generated-sources/annotations</source>
+                                <source>target/generated-sources/annotations
+                                </source>
                             </sourceDirs>
                         </configuration>
                     </execution>

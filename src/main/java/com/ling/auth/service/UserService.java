@@ -7,7 +7,7 @@ import com.ling.common.exception.UsernameAlreadyExistsException;
 
 /**
  * @author LingLambda
- * @date 2025/1/514:10
+ * @since 2025/1/514:10
  */
 public interface UserService extends IService<User> {
   /**
@@ -17,9 +17,13 @@ public interface UserService extends IService<User> {
    */
   User queryUserAndRoleName(String username);
 
-  /** 登录 */
+  /**
+   * 登录
+   */
   String login(User user) throws InvalidCredentialsException;
 
-  /** 注册 */
+  /**
+   * 注册
+   */
   Boolean signUp(User user) throws UsernameAlreadyExistsException;
 }

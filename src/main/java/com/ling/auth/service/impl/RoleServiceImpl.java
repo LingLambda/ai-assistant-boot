@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 
 /**
  * @author LingLambda
- * @date 2025/1/514:10
+ * @since 2025/1/514:10
  */
 @Service
-public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {}
+public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
+}

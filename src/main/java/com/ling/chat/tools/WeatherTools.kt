@@ -11,7 +11,13 @@ class WeatherTools {
     // 定义数据类
     data class City(val city: String)
     data class WeatherInfo(val city: String, val data: Data)
-    data class Data(val date: String, val night: Condition, val high: String, val low: String)
+    data class Data(
+        val date: String,
+        val night: Condition,
+        val high: String,
+        val low: String
+    )
+
     data class Condition(val type: String, val fengli: String)
 
     // 获取城市天气的方法
@@ -25,7 +31,8 @@ class WeatherTools {
             .bodyToMono(WeatherInfo::class.java)
             .block() // 阻塞直到获取到响应
         println("response is: $response")
-        return response ?: throw RuntimeException("Failed to retrieve weather data")
+        return response
+            ?: throw RuntimeException("Failed to retrieve weather data")
     }
 }
 

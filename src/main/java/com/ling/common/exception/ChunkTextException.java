@@ -2,7 +2,7 @@ package com.ling.common.exception;
 
 /**
  * @author LingLambda
- * @date 2025/1/510:33
+ * @since 2025/1/510:33
  */
 public class ChunkTextException extends Exception {
 

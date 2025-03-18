@@ -2,11 +2,8 @@ package com.ling.chat.tools
 
 import com.google.gson.annotations.SerializedName
 import com.ling.common.config.CommonProperties
-import groovy.transform.Final
 import org.springframework.ai.tool.annotation.Tool
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.web.reactive.function.client.WebClient
-import reactor.core.publisher.Mono
 
 
 /**
@@ -24,8 +21,9 @@ class SearchTools(private val commonProperties: CommonProperties) {
         requireNotNull(engineId) { "engineId is null" }
         val response = webClient.get()
             .uri { uriBuilder ->
-                uriBuilder.path("/customsearch/v1").queryParam("key", apiKey).queryParam("q", keyWord)
-                    .queryParam("cx", engineId).queryParam("num","4").build()
+                uriBuilder.path("/customsearch/v1").queryParam("key", apiKey)
+                    .queryParam("q", keyWord)
+                    .queryParam("cx", engineId).queryParam("num", "4").build()
             }
             .retrieve()
             .bodyToMono(CustomSearchResponse::class.java)

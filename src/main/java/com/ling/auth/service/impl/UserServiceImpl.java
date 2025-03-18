@@ -9,14 +9,15 @@ import com.ling.auth.util.SHA256SaltedUtil;
 import com.ling.common.entity.User;
 import com.ling.common.exception.InvalidCredentialsException;
 import com.ling.common.exception.UsernameAlreadyExistsException;
-import java.security.NoSuchAlgorithmException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.security.NoSuchAlgorithmException;
+
 /**
  * @author LingLambda
- * @date 2025/1/514:11
+ * @since 2025/1/514:11
  */
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {

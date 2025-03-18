@@ -2,13 +2,11 @@ package com.ling.chat.config;
 
 import io.micrometer.observation.ObservationRegistry;
 import org.springframework.ai.chat.client.ChatClient;
-import org.springframework.ai.model.function.DefaultFunctionCallbackResolver;
 import org.springframework.ai.model.tool.DefaultToolCallingManager;
 import org.springframework.ai.model.tool.ToolCallingManager;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
-import org.springframework.ai.retry.RetryUtils;
 import org.springframework.ai.tool.resolution.SpringBeanToolCallbackResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -53,14 +51,15 @@ public class AIConfiguration {
         SpringBeanToolCallbackResolver.builder()
             .applicationContext(new GenericApplicationContext(applicationContext))
             .build();
-    ToolCallingManager toolCallingManager = DefaultToolCallingManager.builder()
-        .toolCallbackResolver(resolver).build();
-    OpenAiChatModel chatModel = OpenAiChatModel.builder()
-        .openAiApi(openAiApi)
-        .defaultOptions(openAiChatOptions)
-        .toolCallingManager(toolCallingManager)
-        .observationRegistry(ObservationRegistry.NOOP)
-        .build();
+    ToolCallingManager toolCallingManager =
+        DefaultToolCallingManager.builder().toolCallbackResolver(resolver).build();
+    OpenAiChatModel chatModel =
+        OpenAiChatModel.builder()
+            .openAiApi(openAiApi)
+            .defaultOptions(openAiChatOptions)
+            .toolCallingManager(toolCallingManager)
+            .observationRegistry(ObservationRegistry.NOOP)
+            .build();
     return ChatClient.builder(chatModel);
   }
 }

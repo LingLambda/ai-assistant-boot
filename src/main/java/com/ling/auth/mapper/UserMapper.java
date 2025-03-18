@@ -5,7 +5,7 @@ import com.ling.common.entity.User;
 
 /**
  * @author LingLambda
- * @date 2025/1/514:07
+ * @since 2025/1/514:07
  */
 public interface UserMapper extends BaseMapper<User> {
 

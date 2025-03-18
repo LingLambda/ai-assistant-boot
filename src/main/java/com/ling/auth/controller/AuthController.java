@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 /**
  * @author LingLambda
- * @date 2025/1/517:29
+ * @since 2025/1/517:29
  */
 @RestController
 @RequestMapping("auth")

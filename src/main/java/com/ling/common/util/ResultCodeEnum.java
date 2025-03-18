@@ -2,7 +2,9 @@ package com.ling.common.util;
 
 import lombok.Getter;
 
-/** 统一返回结果状态信息类 */
+/**
+ * 统一返回结果状态信息类
+ */
 @Getter
 public enum ResultCodeEnum {
   SUCCESS(200, "成功"),

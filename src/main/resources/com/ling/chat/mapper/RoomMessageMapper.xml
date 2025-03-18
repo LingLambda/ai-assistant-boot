@@ -3,9 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ling.chat.mapper.RoomMessageMapper">
-    <resultMap id="RoomMessageMap" type="com.ling.common.entity.RoomMessage" autoMapping="true">
+    <resultMap id="RoomMessageMap" type="com.ling.common.entity.RoomMessage"
+               autoMapping="true">
         <id column="id" property="id" javaType="java.lang.Long"/>
-        <association property="room" javaType="com.ling.common.entity.Room" autoMapping="true">
+        <association property="room" javaType="com.ling.common.entity.Room"
+                     autoMapping="true">
             <id column="room_id" property="id"/>
         </association>
     </resultMap>

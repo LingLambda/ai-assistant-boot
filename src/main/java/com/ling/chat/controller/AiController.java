@@ -8,7 +8,10 @@ import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Flux;
 
 @RestController
@@ -66,13 +69,13 @@ public class AiController {
     return QuestionAnswerAdvisor.builder(vectorStore)
         .userTextAdvise(
             """
-             你只有在必要时才使用下面的检索增强信息，检索增强信息每次都会提供给你，一般与90%的对话无关
-             上下文信息如下 ---------------------
-             ---------------------
-             {question_answer_context}
-             ---------------------
-             你可以参考这些资料回答用户问题。
-             """)
+                你只有在必要时才使用下面的检索增强信息，检索增强信息每次都会提供给你，一般与90%的对话无关
+                上下文信息如下 ---------------------
+                ---------------------
+                {question_answer_context}
+                ---------------------
+                你可以参考这些资料回答用户问题。
+                """)
         .build();
     /*
              """

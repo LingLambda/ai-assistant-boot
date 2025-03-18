@@ -8,13 +8,17 @@ import org.springframework.ai.chat.messages.Message
  *@author LingLambda
  *@since 2025/3/13 17:48
  */
-class SqlChatMemory(private val roomMessageService: RoomMessageService) : ChatMemory {
+class SqlChatMemory(private val roomMessageService: RoomMessageService) :
+    ChatMemory {
 
     override fun add(conversationId: String?, messages: MutableList<Message>?) {
         roomMessageService.addMessage(conversationId, messages)
     }
 
-    override fun get(conversationId: String?, lastN: Int): MutableList<Message> {
+    override fun get(
+        conversationId: String?,
+        lastN: Int
+    ): MutableList<Message> {
         return roomMessageService.getMessage(conversationId, lastN)
     }
 

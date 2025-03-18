@@ -5,6 +5,7 @@ import com.ling.common.entity.Role;
 
 /**
  * @author LingLambda
- * @date 2025/1/514:08
+ * @since 2025/1/514:08
  */
-public interface RoleMapper extends BaseMapper<Role> {}
+public interface RoleMapper extends BaseMapper<Role> {
+}

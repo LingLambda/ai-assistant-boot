@@ -4,8 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ling.common.exception.ChunkTextException;
 import io.swagger.v3.oas.annotations.servers.Server;
-import java.io.IOException;
-import java.util.*;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -14,9 +12,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ai.document.Document;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.*;
+
 /**
  * @author LingLambda
- * @date 2025/1/414:12
+ * @since 2025/1/414:12
  */
 @Server
 public class ChunkUtil {
@@ -62,7 +63,7 @@ public class ChunkUtil {
   /**
    * 解析pdf为向量存储数据类型
    *
-   * @param file 切割的pdf文件
+   * @param file     切割的pdf文件
    * @param minCount 最小长度
    * @param bigCount 过大长度
    */
@@ -121,7 +122,7 @@ public class ChunkUtil {
   /**
    * 解析Json为向量存储数据类型，没有content或text的字段会被忽略
    *
-   * @param file file文件
+   * @param file     file文件
    * @param bigCount 过大长度
    */
   public static List<Document> jsonChunks(MultipartFile file, int bigCount)
@@ -129,7 +130,7 @@ public class ChunkUtil {
 
     ObjectMapper objectMapper = new ObjectMapper();
     // 解析 JSON 字符串为 JsonNode
-    JsonNode jn = null;
+    JsonNode jn;
     try {
       jn = objectMapper.readTree(file.getInputStream());
     } catch (IOException e) {
@@ -195,7 +196,7 @@ public class ChunkUtil {
   /**
    * 切分过大的字符串
    *
-   * @param s 输入字符串
+   * @param s        输入字符串
    * @param minCount 最小长度
    * @param bigCount 过大长度
    * @throws ChunkTextException 切分异常

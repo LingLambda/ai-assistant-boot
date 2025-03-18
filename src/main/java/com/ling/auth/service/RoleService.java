@@ -5,6 +5,7 @@ import com.ling.common.entity.Role;
 
 /**
  * @author LingLambda
- * @date 2025/1/514:10
+ * @since 2025/1/514:10
  */
-public interface RoleService extends IService<Role> {}
+public interface RoleService extends IService<Role> {
+}

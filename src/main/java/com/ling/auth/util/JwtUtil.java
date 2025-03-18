@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class JwtUtil {
 
   // token有效时间72小时
-  private final static long EXP = TimeUnit.HOURS.toMillis(72);
+  private static final long EXP = TimeUnit.HOURS.toMillis(72);
   private static byte[] keyByte;
 
   public JwtUtil(@Value("${ling.jwt.token}") String secretKey) {
@@ -54,7 +54,7 @@ public class JwtUtil {
     return claims.get("roleId", Integer.class);
   }
 
-  public static Long getUserIdFromToken(String token){
+  public static Long getUserIdFromToken(String token) {
     Claims claims = parseJwt(token);
     return claims.get("userId", Long.class);
   }

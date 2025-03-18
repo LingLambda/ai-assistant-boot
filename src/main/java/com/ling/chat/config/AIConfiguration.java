@@ -53,11 +53,13 @@ public class AIConfiguration {
         SpringBeanToolCallbackResolver.builder()
             .applicationContext(new GenericApplicationContext(applicationContext))
             .build();
-    ToolCallingManager toolCallingManager = ToolCallingManager.builder().toolCallbackResolver(resolver).build();
+    ToolCallingManager toolCallingManager = DefaultToolCallingManager.builder()
+        .toolCallbackResolver(resolver).build();
     OpenAiChatModel chatModel = OpenAiChatModel.builder()
         .openAiApi(openAiApi)
         .defaultOptions(openAiChatOptions)
         .toolCallingManager(toolCallingManager)
+        .observationRegistry(ObservationRegistry.NOOP)
         .build();
     return ChatClient.builder(chatModel);
   }

@@ -1,9 +1,6 @@
 package com.ling.chat.controller;
 
 import com.ling.chat.entity.ConversationRequest;
-import com.ling.chat.tools.BookTools;
-import com.ling.chat.tools.DateTimeTools;
-import com.ling.chat.tools.WeatherTools;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;

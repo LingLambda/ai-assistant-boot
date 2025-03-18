@@ -14,11 +14,9 @@ class RoomMessage {
     var id: Long? = null
     var roomId: String? = null
     var message: String? = null
-    var messageTypeId: Int? = null
+    var messageType: String? = null // 映射枚举类 org.springframework.ai.chat.messages.MessageType
+
 
     @TableField(exist = false)
     var room: Room? = null
-
-    @TableField(exist = false)
-    var messageType: MessageType? = null
 }

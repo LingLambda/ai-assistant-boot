@@ -26,19 +26,4 @@ class RoomController(
     private val roomMapper: RoomMapper,
     private val roomService: RoomService
 ){
-    /**
-     * 由前端提供房间id，userid
-     */
-    @PostMapping("set_room")
-    fun setRoom(@RequestBody room:Room,@RequestHeader("Authorization") token: String?){
-        val userId = JwtUtil.getUserIdFromToken(token)
-        roomService.createRoom(room.id,userId);
-    }
-
-    @GetMapping("get_room")
-    fun getRoomAll():List<Room>{
-        val queryWrapper = QueryWrapper<Room>()
-        return roomMapper.selectList(queryWrapper);
-    }
-
 }

@@ -8,8 +8,5 @@
         <association property="room" javaType="com.ling.common.entity.Room" autoMapping="true">
             <id column="room_id" property="id"/>
         </association>
-        <association property="messageType"  javaType="com.ling.common.entity.MessageType" autoMapping="true">
-            <id column="message_type_id" property="id"/>
-        </association>
     </resultMap>
 </mapper>

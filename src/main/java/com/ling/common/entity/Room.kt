@@ -12,7 +12,7 @@ import java.time.LocalDateTime
  */
 @TableName("room")
 class Room {
-    @TableId(type =  IdType.INPUT)
+    @TableId(type = IdType.INPUT)
     var id: String? = null
     var createTime: LocalDateTime? = null
     var updateTime: LocalDateTime? = null

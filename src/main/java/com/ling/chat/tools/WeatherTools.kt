@@ -15,7 +15,7 @@ class WeatherTools {
     data class Condition(val type: String, val fengli: String)
 
     // 获取城市天气的方法
-    @Tool(description = "根据输入的城市获取对应的天气")
+    @Tool(description = "Search for weather by cityNames")
     fun getCityWeather(cityName: City): WeatherInfo {
         println("request is: $cityName")
         val response = restClient

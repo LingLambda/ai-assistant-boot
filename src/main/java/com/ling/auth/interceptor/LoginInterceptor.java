@@ -26,10 +26,12 @@ public class LoginInterceptor implements HandlerInterceptor {
   private static final ObjectMapper objectMapper = new ObjectMapper();
 
   @Override
-  public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+  public boolean preHandle(
+      HttpServletRequest request, HttpServletResponse response, Object handler)
       throws IOException {
     String token = request.getHeader("Authorization");
-    if (token == null || token.trim().isEmpty()) {
+    if (token == null || token.trim()
+        .isEmpty()) {
       log.info("JWT validation failed: noToken");
       response.setContentType("application/json;charset=utf-8");
       response
@@ -43,7 +45,8 @@ public class LoginInterceptor implements HandlerInterceptor {
       if (roleId != null) {
         if (isAdminPath(request.getRequestURI()) && !hasAdminPermission(roleId)) {
           response.setContentType("application/json;charset=utf-8");
-          response.getWriter().print(getFailTokenJsonRes(null, ResultCodeEnum.PERMISSION_DENIED));
+          response.getWriter()
+              .print(getFailTokenJsonRes(null, ResultCodeEnum.PERMISSION_DENIED));
           return false;
         }
         return true;
@@ -64,11 +67,13 @@ public class LoginInterceptor implements HandlerInterceptor {
     }
     log.info("JWT validation failed: {}", failInfo);
     response.setContentType("application/json;charset=utf-8");
-    response.getWriter().print(getFailTokenJsonRes(failInfo, ResultCodeEnum.FETCH_TOKEN_FAILED));
+    response.getWriter()
+        .print(getFailTokenJsonRes(failInfo, ResultCodeEnum.FETCH_TOKEN_FAILED));
     return false;
   }
 
-  private String getFailTokenJsonRes(String failInfo, ResultCodeEnum resultCodeEnum)
+  private String getFailTokenJsonRes(
+      String failInfo, ResultCodeEnum resultCodeEnum)
       throws JsonProcessingException {
     Result<Object> build = Result.build(failInfo, resultCodeEnum);
     return objectMapper.writeValueAsString(build);

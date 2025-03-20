@@ -41,11 +41,16 @@ public class ChunkUtil {
   /**
    * @param stringText 需要切割的文本
    */
-  public static List<Document> textChunks(String stringText) throws ChunkTextException {
+  public static List<Document> textChunks(String stringText) throws
+      ChunkTextException {
     List<String> strings = chunkText(stringText, 300, 1000);
     List<Document> documentList = new ArrayList<>();
     for (String string : strings) {
-      documentList.add(Document.builder().id(UUID.randomUUID().toString()).text(string).build());
+      documentList.add(Document.builder()
+          .id(UUID.randomUUID()
+              .toString())
+          .text(string)
+          .build());
     }
     return documentList;
   }
@@ -67,7 +72,8 @@ public class ChunkUtil {
    * @param minCount 最小长度
    * @param bigCount 过大长度
    */
-  public static List<Document> pdfChunksByCount(MultipartFile file, int minCount, int bigCount)
+  public static List<Document> pdfChunksByCount(
+      MultipartFile file, int minCount, int bigCount)
       throws IOException, ChunkTextException {
 
     try (PDDocument pdf = Loader.loadPDF(file.getBytes())) {
@@ -141,7 +147,8 @@ public class ChunkUtil {
     if (jn.isArray()) {
       Iterator<JsonNode> jnEl = jn.elements();
       while (jnEl.hasNext()) {
-        Iterator<Map.Entry<String, JsonNode>> fields = jnEl.next().fields();
+        Iterator<Map.Entry<String, JsonNode>> fields = jnEl.next()
+            .fields();
         List<Document> ds = jsonItemChunk(fields, file.getOriginalFilename(), bigCount);
         if (null != ds) {
           documentList.addAll(ds);
@@ -158,7 +165,9 @@ public class ChunkUtil {
       Iterator<Map.Entry<String, JsonNode>> item, String fileName, int bigCount)
       throws ChunkTextException {
     List<Document> documentList = new ArrayList<>();
-    Document.Builder builder = Document.builder().id(fileName).text("");
+    Document.Builder builder = Document.builder()
+        .id(fileName)
+        .text("");
     while (item.hasNext()) {
       Map.Entry<String, JsonNode> s = item.next();
       JsonNode value = s.getValue();
@@ -173,7 +182,8 @@ public class ChunkUtil {
         builder.metadata(s.getKey(), value.asText());
       }
     }
-    String text = builder.build().getText();
+    String text = builder.build()
+        .getText();
     if (text.isEmpty()) {
       // 如果text为空，直接跳出
       return null;
@@ -184,7 +194,8 @@ public class ChunkUtil {
       List<String> strings = chunkText(text, 0, bigCount);
       for (String string : strings) {
         log.debug("chunk add");
-        documentList.add(builder.text(string).build());
+        documentList.add(builder.text(string)
+            .build());
       }
     } else {
       documentList.add(builder.build());

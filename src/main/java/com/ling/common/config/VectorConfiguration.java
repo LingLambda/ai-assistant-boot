@@ -21,7 +21,8 @@ public class VectorConfiguration {
   private Boolean init;
 
   @Bean
-  public VectorStore VecStore(JedisPooled jedisPooled, EmbeddingModel embeddingModel) {
+  public VectorStore VecStore(
+      JedisPooled jedisPooled, EmbeddingModel embeddingModel) {
     return RedisVectorStore.builder(jedisPooled, embeddingModel)
         .indexName(index) // Optional: defaults to "spring-ai-index"
         .prefix(prefix) // Optional: defaults to "embedding:"

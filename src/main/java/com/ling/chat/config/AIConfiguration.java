@@ -40,8 +40,12 @@ public class AIConfiguration {
   }
 
   @Bean
-  public ChatClient.Builder lingClientBuild(ApplicationContext applicationContext) {
-    OpenAiApi openAiApi = OpenAiApi.builder().baseUrl(baseurl).apiKey(apiKey).build();
+  public ChatClient.Builder lingClientBuild(
+      ApplicationContext applicationContext) {
+    OpenAiApi openAiApi = OpenAiApi.builder()
+        .baseUrl(baseurl)
+        .apiKey(apiKey)
+        .build();
     OpenAiChatOptions openAiChatOptions = new OpenAiChatOptions();
     openAiChatOptions.setModel(chatModelName);
     openAiChatOptions.setMaxTokens(chatMaxTokens);
@@ -52,7 +56,9 @@ public class AIConfiguration {
             .applicationContext(new GenericApplicationContext(applicationContext))
             .build();
     ToolCallingManager toolCallingManager =
-        DefaultToolCallingManager.builder().toolCallbackResolver(resolver).build();
+        DefaultToolCallingManager.builder()
+            .toolCallbackResolver(resolver)
+            .build();
     OpenAiChatModel chatModel =
         OpenAiChatModel.builder()
             .openAiApi(openAiApi)

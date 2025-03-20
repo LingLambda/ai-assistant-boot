@@ -20,7 +20,8 @@ import java.security.NoSuchAlgorithmException;
  * @since 2025/1/514:11
  */
 @Service
-public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
+public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements
+    UserService {
 
   private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
   private final UserMapper userMapper;

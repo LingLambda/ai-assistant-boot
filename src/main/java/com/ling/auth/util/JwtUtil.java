@@ -67,7 +67,7 @@ public class JwtUtil {
   }
 
   public static Long getUserIdFromToken(String token) {
-    Claims claims = parseJwt(token);
-    return claims.get("userId", Long.class);
+    String userId = parseJwt(token).getSubject();
+    return Long.parseLong(userId);
   }
 }

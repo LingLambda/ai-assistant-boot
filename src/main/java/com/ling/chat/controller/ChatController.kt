@@ -1,5 +1,6 @@
 package com.ling.chat.controller
 
+import com.ling.auth.util.JwtUtil
 import com.ling.chat.entity.SqlChatMemory
 import com.ling.chat.service.RoomMessageService
 import com.ling.chat.service.RoomService
@@ -28,8 +29,9 @@ class ChatController(
     fun vecChatStream(
         @RequestParam(required = true) conversationId: String,
         @RequestParam(required = true) message: String,
-        @RequestParam(required = true) userId: Long
+        @RequestHeader("Authorization") token: String//从jtw获取userId防止伪造
     ): Flux<ChatResponse> {
+        val userId = JwtUtil.getUserIdFromToken(token)
         val memory =
             SqlChatMemory(roomMessageService, roomService, userId)
         return openAiChatService.vectorSpec(

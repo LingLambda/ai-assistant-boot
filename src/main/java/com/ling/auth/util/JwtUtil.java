@@ -1,5 +1,6 @@
 package com.ling.auth.util;
 
+import com.ling.common.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -25,18 +26,24 @@ public class JwtUtil {
   }
 
   // 生成 JWT
-  public static String generateJwt(String username, Integer roleId, String roleName)
-      throws NoSuchAlgorithmException {
+  public static String generateJwt(User user) throws NoSuchAlgorithmException {
     SecretKey key = Keys.hmacShaKeyFor(keyByte);
 
     long nowMillis = System.currentTimeMillis();
     Date now = new Date(nowMillis);
     long expMillis = nowMillis + EXP;
     Date exp = new Date(expMillis);
-
     return Jwts.builder()
-        .subject(username) // 主题，可以是用户 ID 或其他标识符
-        .claims(Map.of("roleId", roleId, "roleName", roleName))
+        .subject(String.valueOf(user.getId())) // 主题，可以是用户 ID 或其他标识符
+        .claims(
+            Map.of(
+                "username",
+                user.getUsername(),
+                "roleId",
+                user.getRoleId(),
+                "roleName",
+                user.getRole()
+                    .getRoleName()))
         .issuedAt(now) // 签发时间
         .expiration(exp) // 过期时间
         .signWith(key)
@@ -46,7 +53,11 @@ public class JwtUtil {
   // 解析 JWT
   private static Claims parseJwt(String token) {
     SecretKey key = Keys.hmacShaKeyFor(keyByte);
-    return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
+    return Jwts.parser()
+        .verifyWith(key)
+        .build()
+        .parseSignedClaims(token)
+        .getPayload();
   }
 
   // 获取 JWT 的权限 id

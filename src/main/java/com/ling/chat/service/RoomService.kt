@@ -13,6 +13,15 @@ interface RoomService : IService<Room> {
     /**
      * 检查id对应的room是否存在，不存在则创建，有则更新update_time字段
      */
-    fun checkRoomExist(conversationId: String?, userId: Long?)
+    fun checkRoomCreateOrUpdate(conversationId: String?, userId: Long?)
+
+    /**
+     * 删除房间并清空其下所有消息记录
+     */
     fun removeRoom(conversationId: String?)
+
+    /**
+     * 查询某用户的所有消息房间
+     */
+    fun queryRoomByUserId(userId: Long?): MutableList<Room>
 }

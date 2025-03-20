@@ -34,14 +34,18 @@ public class VectorController {
   }
 
   @GetMapping("vector/query")
-  public Result<?> vectorQuery(@RequestParam String message, @RequestParam("top_k") Integer topK) {
+  public Result<?> vectorQuery(
+      @RequestParam String message, @RequestParam("top_k") Integer topK) {
     try {
       if (topK == null) {
         topK = 10;
       }
       List<Document> documentList =
           this.vectorStore.similaritySearch(
-              SearchRequest.builder().query(message).topK(topK).build());
+              SearchRequest.builder()
+                  .query(message)
+                  .topK(topK)
+                  .build());
       return Result.build(documentList, ResultCodeEnum.SUCCESS);
     } catch (Exception e) {
       log.error("未知错误", e);

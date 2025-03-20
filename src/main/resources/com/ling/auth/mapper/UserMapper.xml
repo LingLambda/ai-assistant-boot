@@ -19,7 +19,8 @@
     </resultMap>
 
     <select id="queryUserAndRole" resultMap="UserMap">
-        select user.username,
+        select user.id,
+               user.username,
                user.password,
                user.salt,
                role.id as role_id,

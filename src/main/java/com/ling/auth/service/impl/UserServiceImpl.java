@@ -46,8 +46,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         throw new InvalidCredentialsException("用户名或密码错误");
       }
 
-      return JwtUtil.generateJwt(
-          selectOne.getUsername(), selectOne.getRoleId(), selectOne.getRole().getRoleName());
+      return JwtUtil.generateJwt(selectOne);
     } catch (NoSuchAlgorithmException e) {
       log.error("无此加密方式{}", e.getMessage());
     }

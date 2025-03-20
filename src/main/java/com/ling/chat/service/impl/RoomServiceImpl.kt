@@ -1,5 +1,6 @@
 package com.ling.chat.service.impl
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl
 import com.ling.chat.mapper.RoomMapper
@@ -24,7 +25,10 @@ open class RoomServiceImpl(
         roomMapper.insert(room)
     }
 
-    override fun checkRoomExist(conversationId: String?, userId: Long?) {
+    override fun checkRoomCreateOrUpdate(
+        conversationId: String?,
+        userId: Long?
+    ) {
         val selectById = roomMapper.selectById(conversationId)
         val room = Room()
         room.id = conversationId
@@ -41,5 +45,10 @@ open class RoomServiceImpl(
         val updateWrapper =
             UpdateWrapper<RoomMessage>().eq("room_id", conversationId)
         roomMessageMapper.delete(updateWrapper)
+    }
+
+    override fun queryRoomByUserId(userId: Long?): MutableList<Room> {
+        val wrapper = QueryWrapper<Room>().eq("user_id", userId)
+        return roomMapper.selectList(wrapper)
     }
 }

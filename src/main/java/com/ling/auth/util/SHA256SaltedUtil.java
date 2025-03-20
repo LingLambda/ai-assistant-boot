@@ -14,7 +14,8 @@ public class SHA256SaltedUtil {
    * @return 加密后的 SHA-256 哈希值
    * @throws NoSuchAlgorithmException
    */
-  public static String sha256WithSalt(String input, String salt) throws NoSuchAlgorithmException {
+  public static String sha256WithSalt(String input, String salt) throws
+      NoSuchAlgorithmException {
     // 将输入字符串与盐值结合
     String saltedInput = input + salt;
 
@@ -27,7 +28,7 @@ public class SHA256SaltedUtil {
     // 将字节数组转换为十六进制字符串
     return byteArrayToHex(hash);
   }
-
+ 
   /**
    * 将字节数组转换为十六进制字符串
    *

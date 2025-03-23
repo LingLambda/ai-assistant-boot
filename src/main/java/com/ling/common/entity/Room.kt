@@ -17,6 +17,7 @@ class Room {
     var createTime: LocalDateTime? = null
     var updateTime: LocalDateTime? = null
     var userId: Long? = null
+    var title: String? = null
 
     @TableField(exist = false)
     var roomMessageList: List<RoomMessage>? = null

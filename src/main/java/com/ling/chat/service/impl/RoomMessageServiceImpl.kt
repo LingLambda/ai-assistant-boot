@@ -35,9 +35,7 @@ open class RoomMessageServiceImpl(
         conversationId: String?,
         lastN: Int?
     ): MutableList<Message> {
-        val queryWrapper = QueryWrapper<RoomMessage>()
-        queryWrapper.eq("room_id", conversationId)
-        val selectList = roomMessageMapper.selectList(queryWrapper)
+        val selectList = getRoomMessage(conversationId, lastN)
         val messageList: MutableList<Message> = selectList.map { roomMessage ->
             when (roomMessage.messageType) {
                 MessageType.SYSTEM.value -> SystemMessage(roomMessage.message)
@@ -52,9 +50,19 @@ open class RoomMessageServiceImpl(
         return messageList.subList(fromIndex, size)
     }
 
+    override fun getRoomMessage(
+        conversationId: String?,
+        lastN: Int?
+    ): MutableList<RoomMessage> {
+        val queryWrapper = QueryWrapper<RoomMessage>()
+            .eq("room_id", conversationId)
+            .select("message_type", "message")
+        return roomMessageMapper.selectList(queryWrapper)
+    }
+
     override fun clearMessage(conversationId: String?) {
-        val queryWrapper =
-            QueryWrapper<RoomMessage>().eq("room_id", conversationId)
+        val queryWrapper = QueryWrapper<RoomMessage>()
+            .eq("room_id", conversationId)
         roomMessageMapper.delete(queryWrapper)
     }
 }

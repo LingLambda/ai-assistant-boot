@@ -21,7 +21,12 @@ interface RoomService : IService<Room> {
     fun removeRoom(conversationId: String?)
 
     /**
-     * 查询某用户的所有消息房间
+     * 查询某用户的所有消息房间 根据时间倒序
      */
     fun queryRoomByUserId(userId: Long?): MutableList<Room>
+
+    /**
+     * 设置标题
+     */
+    fun setTitle(conversationId: String, title: String)
 }

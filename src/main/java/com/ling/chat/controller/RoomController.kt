@@ -4,8 +4,8 @@ import com.ling.auth.util.JwtUtil
 import com.ling.chat.service.RoomMessageService
 import com.ling.chat.service.RoomService
 import com.ling.common.entity.Room
+import com.ling.common.entity.RoomMessage
 import com.ling.common.util.Result
-import org.springframework.ai.chat.messages.Message
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -30,8 +30,8 @@ class RoomController(
     }
 
     @GetMapping("query_room_message")
-    fun queryRoomMessage(conversationId: String): Result<MutableList<Message>> {
-        val messages = roomMessageService.getMessage(conversationId, 100)
+    fun queryRoomMessage(conversationId: String): Result<MutableList<RoomMessage>> {
+        val messages = roomMessageService.getRoomMessage(conversationId, 100)
         return Result.ok(messages)
     }
 }

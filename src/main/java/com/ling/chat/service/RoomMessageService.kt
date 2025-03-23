@@ -15,9 +15,17 @@ interface RoomMessageService : IService<RoomMessage> {
     fun addMessage(conversationId: String?, messages: MutableList<Message>?)
 
     /**
-     * 获取指定房间的所有消息
+     * 获取指定房间的所有消息，（Message）类型
      */
     fun getMessage(conversationId: String?, lastN: Int?): MutableList<Message>
+
+    /**
+     * 获取指定房间的所有消息，（RoomMessage）类型，仅显示"message_type", "message"字段
+     */
+    fun getRoomMessage(
+        conversationId: String?,
+        lastN: Int?
+    ): MutableList<RoomMessage>
 
     /**
      * 清空指定房间消息

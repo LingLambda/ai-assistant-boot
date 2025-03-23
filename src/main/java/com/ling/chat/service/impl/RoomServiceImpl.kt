@@ -48,7 +48,15 @@ open class RoomServiceImpl(
     }
 
     override fun queryRoomByUserId(userId: Long?): MutableList<Room> {
-        val wrapper = QueryWrapper<Room>().eq("user_id", userId)
+        val wrapper =
+            QueryWrapper<Room>().eq("user_id", userId)
+                .orderByDesc("create_time")
         return roomMapper.selectList(wrapper)
+    }
+
+    override fun setTitle(conversationId: String, title: String) {
+        val wrapper = UpdateWrapper<Room>().eq("id", conversationId)
+            .set("title", title)
+        roomMapper.update(wrapper)
     }
 }
